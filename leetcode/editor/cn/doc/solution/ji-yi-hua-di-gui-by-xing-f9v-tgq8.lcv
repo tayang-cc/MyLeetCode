@@ -1,0 +1,42 @@
+> Problem: [70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs/description/)
+
+[TOC]
+
+# 思路
+
+> 括号内的数字表示每次爬楼梯用的步数
+> 第一次爬台阶只能使用1次方法(1)
+> 第二层是2次方法(1,1)(2)
+> 第三层是3次方法(1,1,1)(1,2)(2,1)
+> 第四层是5次方法(1,1,1,1)(1,2,1)(2,1,1)(1,1,2)(2,2)
+> 可以看的出来这是斐波那契数列,第n层的方法是(n-1)+(n-2)
+
+# 解题方法
+
+> 于是我们可以使用记忆法多路递归,可以先创建一个memory的数组,因为数字0也要存进去,所以大小为n+1
+
+> 第0层和第1层是只有一种方法,所以把数组提前存好,存好之后,把数组在传递进去,因为C#的数组内容默认为0,于是判断,如果第n层不是0的话,就说明有数据,于是可以直接递归出去,并不用在深度查找
+
+# Code
+
+* []
+
+```C#
+
+public class Solution {
+    public int ClimbStairs(int n) {
+        int[] memory = new int[n+1];
+        memory[0] = 1;
+        memory[1] = 1;
+        return memorys(n,memory);
+    }
+    private int memorys(int n ,int[] memo){
+        if(memo[n]!=0)return memo[n];
+        int x = memorys(n-1,memo);
+        int y = memorys(n-2,memo);
+        memo[n] = x+y;
+        return memo[n];
+    }
+}
+```
+

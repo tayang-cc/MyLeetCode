@@ -1,0 +1,36 @@
+### 解题思路
+
+使用n判断从最后一个开始为9的元素，直接设值为1，使用k标素当前判断的元素，如果不为9，则让k-1找前一个元素直接加1，while的if判断当前判断的元素是否是第一个元素，如果是则再判断第一个元素是否为9，是的话直接创建一个新数组，然后将第一个元素设值为1直接返回
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public int[] plusOne(int[] digits) {
+        //获取最后一个元素并加1
+        int n=digits[digits.length-1]+1;
+        //获取第最后一个元素的下标
+        int k=digits.length-1;
+        //如果最后一个元素加一等于10了则要进位
+        while(n==10){
+            //判断当前k指向的元素的下标是否是第一个元素，并且第一个元素为9，创建新数组并返回
+            if(k==0&&digits[0]==9){
+                int[] arr=new int[digits.length+1];
+                arr[0]=1;
+                return arr;
+            }
+            //如果当前判断的元素为10了直接赋值为0
+            digits[k]=0;
+            //获取向前一个元素
+            n=digits[k-1]+1;
+            k--;
+        }
+        //走到这里代表当前k指向的元素不为9，加一返回即可
+        digits[k]=digits[k]+1;
+        return digits;
+    }
+}
+```
+

@@ -1,0 +1,7 @@
+class Solution {
+public int mySqrt(int x) {
+return (int)Math.sqrt(x);
+}
+}
+我就用，我就用，我就用。
+有现成的我不用，那我不是傻！！！
