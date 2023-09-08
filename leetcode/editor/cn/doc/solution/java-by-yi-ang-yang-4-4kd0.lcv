@@ -1,0 +1,44 @@
+### 解题思路
+
+执行时间：0ms；100%
+内存：36.2MB;94.51%
+1.找出相同前缀，首先找到数组中字符串最短的(短板效应：始终要满足最短的哪一个)。
+2.设置判断值，截取最短字符串子串（从后往前截取），和其他字符串前缀进行比较，只要其中一个不满足就跳过。
+3.相同判断值就做+1操作；如果判断值等于数组长度则全部都满足这个前缀。
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+          int min=strs[0].length();
+          int index=0;
+          for(int i=0;i<strs.length;i++){
+          if(min> strs[i].length()){
+            min=strs[i].length();
+            index=i;
+                  }
+          }
+            String str1=null;
+              for (int j = min; j >0; j--) {
+                   str1=strs[index].substring(0,j);
+                   int a=0;
+                  for (int i = 0; i < strs.length; i++) {
+                   if(!strs[i].startsWith(str1)){
+                       break;
+                   }else {
+                       a++;
+                   }
+              }
+                  if(a==strs.length){
+                      return str1;
+                  }
+          }
+             return "";
+
+    }
+}
+```
+

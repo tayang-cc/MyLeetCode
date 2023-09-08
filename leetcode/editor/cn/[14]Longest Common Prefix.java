@@ -34,25 +34,27 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String longestCommonPrefix(String[] strs) {
-        //["flower","flow","flight"]
-        String res = "";
-        if (strs.length == 0) return "";
-
-        for(int i=0; i<strs[0].length(); i++){
-            for(int j=0; j< strs.length; j++){
-                if(strs[j] == "") return "";
-                char cur = strs[0].charAt(i);
-                if(strs[j].length() <= i) return res;
-                if(strs[j].charAt(i) != cur){
-                    return res;
-                }
-                if(j == strs.length - 1){
-                    res += cur;
-                }
+        //test case : ["flower","flow","flight"]
+        int min = strs[0].length();
+        int index = 0;
+        for (int i = 0; i < strs.length; i++) {
+            if (min > strs[i].length()) {
+                min = strs[i].length();
+                index = i;
             }
-
         }
-        return res;
+        String str1 = "";
+        for (int i = min; i > 0; i--) {
+            str1 = strs[index].substring(0, i);
+            int a = 0;
+            for (int j = 0; j < strs.length; j++) {
+                if (!strs[j].startsWith(str1)) break;
+                else a++;
+            }
+            if (a == strs.length) return str1;
+        }
+        return "";
     }
 }
+
 //leetcode submit region end(Prohibit modification and deletion)
