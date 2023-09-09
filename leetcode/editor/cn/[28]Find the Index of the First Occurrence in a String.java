@@ -67,23 +67,7 @@ class Solution {
         }
         return -1;
 
-        //        int len1 = haystack.length();
-//        int len2 = needle.length();
-//
-//        if (len1 < len2) return -1;
-//        if (len1 == len2) return haystack.equals(needle) ? 0 : -1;
-//
-//        if (haystack.contains(needle)) {
-//            char c = needle.charAt(0);
-//            for (int i = 0; i < len1 - len2 + 1; i++) {
-//                if (haystack.charAt(i) == c) {
-//                    if (haystack.substring(i, i + len2).equals(needle)) {
-//                        return i;
-//                    }
-//                }
-//            }
-//        }
-//        return -1;
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
