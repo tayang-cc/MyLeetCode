@@ -33,6 +33,7 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int strStr(String ss, String pp) {
+        
         //KMP algorithm
         //ss : haystack pp : needle
         if (pp.isEmpty()) return 0;
