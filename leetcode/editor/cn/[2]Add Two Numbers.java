@@ -42,46 +42,42 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode dummy = new ListNode();
-        ListNode curr = dummy;
+        ListNode pre = new ListNode(0);
+        ListNode cur = pre;
         int carry = 0;
-
         while (l1 != null || l2 != null) {
-            int sum = carry;
-
-            if (l1 != null) {
-                sum += l1.val;
-                l1 = l1.next;
-            }
-
-            if (l2 != null){
-                sum += l2.val;
-                l2 = l2.next;
-            }
-
-            curr.next = new ListNode(sum % 10);
-            curr = curr.next;
+            int x = l1 == null ? 0 : l1.val;
+            int y = l2 == null ? 0 : l2.val;
+            int sum = x + y + carry;
+            //carry 为进位标志
             carry = sum / 10;
+            //sum 为当前位的值
+            sum = sum % 10;
+            cur.next = new ListNode(sum);
+            cur = cur.next;
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
         }
-
-        if (carry != 0) {
-            curr.next = new ListNode(carry);
+        if (carry == 1) {
+            cur.next = new ListNode(carry);
         }
-
-        return dummy.next;
+        return pre.next;
     }
+
 }
+
 //leetcode submit region end(Prohibit modification and deletion)
