@@ -1,0 +1,167 @@
+#### 方法一：排序
+
+按照题目要求，我们首先获取数组 $\textit{restaurants}$ 经过三个过滤器后的 $\textit{filtered}$ 数组。遍历 $\textit{restaurants}$，假设当前遍历的元素为 $\textit{restaurants}[i]$，如果以下条件都满足：
+
++ $\textit{restaurants}[i][3] <= \textit{maxPrice}$
+
++ $\textit{restaurants}[i][4] <= \textit{maxDistance}$
+
++ $\textit{veganFriendly}$ 为 $\text{false}$ 或 $\textit{restaurants}[i][2]$ 为 $\text{true}$
+
+那么将 $\textit{restaurants}[i]$ 加入到 $\textit{filtered}$ 中。然后将 $\textit{filtered}$ 按照 $\textit{rating}$ 从高到低排序，如果 $\textit{rating}$ 相同，则按 $\textit{id}$ 从高到低排序。最后返回 $\textit{filtered}$ 的所有 $\textit{id}$ 作为结果。
+
+* [sol1-C++]
+
+```C++
+class Solution {
+public:
+    vector<int> filterRestaurants(vector<vector<int>>& restaurants, int veganFriendly, int maxPrice, int maxDistance) {
+        int n = restaurants.size();
+        vector<vector<int>> filtered;
+        for (int i = 0; i < n; i++) {
+            if (restaurants[i][3] <= maxPrice && restaurants[i][4] <= maxDistance && !(veganFriendly && !restaurants[i][2])) {
+                filtered.push_back(restaurants[i]);
+            }
+        }
+        sort(filtered.begin(), filtered.end(), [](vector<int> &v1, vector<int> &v2) -> bool {
+            return v1[1] > v2[1] || (v1[1] == v2[1] && v1[0] > v2[0]);
+        });
+        vector<int> res;
+        for (auto &v : filtered) {
+            res.push_back(v[0]);
+        }
+        return res;
+    }
+};
+```
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public List<Integer> filterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
+        int n = restaurants.length;
+        List<int[]> filtered = new ArrayList<int[]>();
+        for (int i = 0; i < n; i++) {
+            if (restaurants[i][3] <= maxPrice && restaurants[i][4] <= maxDistance && !(veganFriendly == 1 && restaurants[i][2] == 0)) {
+                filtered.add(restaurants[i]);
+            }
+        }
+        Collections.sort(filtered, (a, b) -> {
+            if (a[1] != b[1]) {
+                return b[1] - a[1];
+            } else {
+                return b[0] - a[0];
+            }
+        });
+        List<Integer> res = new ArrayList<Integer>();
+        for (int[] v : filtered) {
+            res.add(v[0]);
+        }
+        return res;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public IList<int> FilterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
+        int n = restaurants.Length;
+        IList<int[]> filtered = new List<int[]>();
+        for (int i = 0; i < n; i++) {
+            if (restaurants[i][3] <= maxPrice && restaurants[i][4] <= maxDistance && !(veganFriendly == 1 && restaurants[i][2] == 0)) {
+                filtered.Add(restaurants[i]);
+            }
+        }
+        ((List<int[]>) filtered).Sort((a, b) => {
+            if (a[1] != b[1]) {
+                return b[1] - a[1];
+            } else {
+                return b[0] - a[0];
+            }
+        });
+        IList<int> res = new List<int>();
+        foreach (int[] v in filtered) {
+            res.Add(v[0]);
+        }
+        return res;
+    }
+}
+```
+
+* [sol1-Go]
+
+```Go
+func filterRestaurants(restaurants [][]int, veganFriendly int, maxPrice int, maxDistance int) []int {
+    filtered := [][]int{}
+    for _, r := range restaurants {
+        if r[3] <= maxPrice && r[4] <= maxDistance && !(veganFriendly == 1 && r[2] == 0) {
+            filtered = append(filtered, r)
+        }
+    }
+    sort.Slice(filtered, func(i, j int) bool {
+        return filtered[i][1] > filtered[j][1] || (filtered[i][1] == filtered[j][1] && filtered[i][0] > filtered[j][0])
+    })
+    res := []int{}
+    for _, r := range filtered {
+        res = append(res, r[0])
+    }
+    return res
+}
+```
+
+* [sol1-Python]
+
+```Python
+class Solution:
+    def filterRestaurants(self, restaurants: List[List[int]], veganFriendly: int, maxPrice: int, maxDistance: int) -> List[int]:
+        filtered = [r for r in restaurants if r[3] <= maxPrice and r[4] <= maxDistance and not (veganFriendly and not r[2])]
+        filtered.sort(key=lambda r: (-r[1], -r[0]))
+        return [r[0] for r in filtered]
+```
+
+* [sol1-C]
+
+```C
+int cmp(const void *p1, const void *p2) {
+    int *r1 = *(int **)p1, *r2 = *(int **)p2;
+    return r1[1] != r2[1] ? r2[1] - r1[1] : r2[0] - r1[0];
+}
+
+int* filterRestaurants(int** restaurants, int restaurantsSize, int* restaurantsColSize, int veganFriendly, int maxPrice, int maxDistance, int* returnSize){
+    int **filtered = (int **)malloc(sizeof(int *) * restaurantsSize);
+    int filteredSize = 0;
+    for (int i = 0; i < restaurantsSize; i++) {
+        if (restaurants[i][3] <= maxPrice && restaurants[i][4] <= maxDistance && !(veganFriendly && !restaurants[i][2])) {
+            filtered[filteredSize++] = restaurants[i];
+        }
+    }
+    qsort(filtered, filteredSize, sizeof(int *), cmp);
+    int *ret = (int *)malloc(sizeof(int) * filteredSize);
+    for (int i = 0; i < filteredSize; i++) {
+        ret[i] = filtered[i][0];
+    }
+    free(filtered);
+    *returnSize = filteredSize;
+    return ret;
+}
+```
+
+* [sol1-JavaScript]
+
+```JavaScript
+var filterRestaurants = function(restaurants, veganFriendly, maxPrice, maxDistance) {
+    const filtered = restaurants.filter(item => item[3] <= maxPrice && item[4] <= maxDistance && !(veganFriendly && !item[2]));
+    filtered.sort((a, b) => a[1] == b[1] ? b[0] - a[0] : b[1] - a[1]);
+    return filtered.map(item => item[0]);
+};
+```
+
+**复杂度分析**
+
++ 时间复杂度：$O(n \log n)$，其中 $n$ 是数组 $\textit{restaurants}$ 的长度。排序需要 $O(n \log n)$。
+
++ 空间复杂度：$O(n)$。保存 $\textit{filtered}$ 需要 $O(n)$ 的空间。
+
