@@ -1,0 +1,49 @@
+> Problem: [2731. 移动机器人](https://leetcode.cn/problems/movement-of-robots/description/)
+
+# 解题思路
+
+当两个机器人相撞时，它们开始沿着原本相反的方向移动。向右移动的机器人会转向向左移动，向左移动的机器人会转向向右移动，而且它们移动的速度都一样，这对经过d秒后，对要求所有机器人之间两两距离之和的计算结果没有影响。所以可以忽略两球碰撞后产生的影响。
+
+我们计算经过 $d$秒后，每一个机器人所处的位置 $pos[i]$。然后对数组 $pos[i]$ 进行从小到大排序。
+
+当 $pos[j] <= pos[i]$时 , 机器人 $i$ 和机器人 $j$ 之间的距离为 $pos[i] - pos[j]$；当 $pos[j] >=  pos[i]$ , 机器人 $i$ 和机器人 $j$ 之间的距离为 $pos[j] - pos[i]$。排序后，计算机器人 $i$与其它 $n - 1$ 个机器人的距离时，$pos[i]$取加号的有 $i$ 次，取减号的有 $n -1 -i$次。所以机器人 $i$ 对计算机器人之间两两距离之和产生的影响为 $i * pos[i] - (n -1 - i) * pos[i]$。为了加快运算速度，我们可以同时计算两个机器人 $left$和 $right$ 对计算所有机器人之间两两距离之和产生的影响。两个机器人 $left$和 $right$在数组 $pos$中的索引满足 $left + right = n -1$, 那么两个机器人 $left$ 和 $right$对计算所有机器人之间两两距离之和产生的影响为
+$ (right - left) * (pos[right] - pos[left]) $
+
+![image.png](https://pic.leetcode.cn/1696890680-DEEAqH-image.png)
+
+# 复杂度
+
+- 时间复杂度: $O(nlogn)$
+- 空间复杂度: $O(n)$
+
+# Code
+
+* []
+
+```Java
+
+class Solution {
+  static int mod = (int)1e9 + 7;
+  public int sumDistance(int[] nums, String s, int d) {
+     
+      int n = s.length();
+      long[] pos = new long[n];
+      for (int i = 0; i < n; i++) 
+          pos[i] = (long) nums[i] + (s.charAt(i) == 'R' ? d: -d);
+           
+      Arrays.sort(pos);
+     
+      long result = 0;
+     
+      for(int left = 0, right = n -1; left < right; left++, right--){
+          result +=  (right - left) * (pos[right] - pos[left]) ;
+          result %= mod;
+      }
+     
+      return (int) result;
+  }
+}
+
+
+```
+

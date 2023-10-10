@@ -1,0 +1,63 @@
+> Problem: [2731. 移动机器人](https://leetcode.cn/problems/movement-of-robots/description/)
+
+[TOC]
+
+# 思路
+
+> 看到最后计算pair之间距离的方式可以看出，各个robot的坐标并不需要对应到机器人的编号。
+
+我们发现机器人碰撞其实不需要进行转向的计算。
+
+所以这道题变成了如何计算长度为n数组中两两元素差的绝对值的总和。
+
+# 解题方法
+
+    考虑 a0, a1, a2的情况，我们假设nums为递增数组。
+
+    sum = (a2 - a0) + (a1 - a0) + (a2 - a1)
+
+    不难看出a2: +2, a1: +0, a0: -2
+
+    每个元素会被右侧的元素减，同时会相对左侧的元素加
+
+    明显可得总和中 ai 的常数为 i - (n - 1) + i - 0 (n为nums长度)
+
+# 复杂度
+
+- 时间复杂度:
+
+> 添加时间复杂度, 示例： $O(n)$
+
+- 空间复杂度:
+
+> 添加空间复杂度, 示例： $O(n)$
+
+# Code
+
+* []
+
+```Python
+
+class Solution:
+  def sumDistance(self, nums: List[int], s: str, d: int) -> int:
+      mod = 10 ** 9 + 7
+
+      n = len(nums)
+      for i in range(n):
+          if s[i] == 'R':
+              nums[i] += d
+          else:
+              nums[i] -= d
+      
+      nums.sort()
+      dis_sum = 0
+
+      for i in range(n - 1, -1, -1):
+          dis_sum += nums[i] * (i - n + i + 1)
+          dis_sum = dis_sum % mod
+      
+      return dis_sum
+          
+
+```
+

@@ -1,0 +1,55 @@
+> Problem: [2731. 移动机器人](https://leetcode.cn/problems/movement-of-robots/description/)
+
+[TOC]
+
+# 思路
+
+> 两个机器人相互碰撞, 只进行方向交换, 并且机器人是视为无差别的, 那么可以看做所有机器人之间不存在碰撞, 可以相互穿过
+
+> 只需要将机器人根据对应方向加上或减去d秒移动的距离(d个单位长度)
+
+> 然后将移动后的坐标点排序, 来计算两两之间的距离
+
+> 下图 表示在$O(n)$复杂度, 求两两之间的距离和 (有序的)
+
+![2731. 移动机器人.png](https://pic.leetcode.cn/1696902282-RinIxE-2731.%20%E7%A7%BB%E5%8A%A8%E6%9C%BA%E5%99%A8%E4%BA%BA.png)
+
+# 复杂度
+
+- 时间复杂度: $O(nlogn)$
+
+> 距离操作： $O(n)$
+
+> 排序操作： $O(nlogn)$
+
+> 计算距离和操作： $O(n)$
+
+- 空间复杂度: $O(1)$
+
+# Code
+
+* []
+
+```C++
+
+class Solution {
+  const int mod = 1e9 + 7;
+public:
+  int sumDistance(vector<int>& nums, string s, int d) {
+      int n = nums.size();
+      for(int i = 0; i < n; ++ i) {
+          nums[i] += s[i] == 'R' ? d : -d;
+      }
+      sort(nums.begin(), nums.end());
+      long long sum = 0LL;
+      long long res = 0LL;
+      for(int i = 1; i < n; ++ i) {
+          long long dis = (long long)nums[i] - nums[i - 1];
+          sum = sum % mod + (i * dis) % mod;
+          res = res % mod + sum % mod;
+      }
+      return res % mod;
+  }
+};
+```
+
