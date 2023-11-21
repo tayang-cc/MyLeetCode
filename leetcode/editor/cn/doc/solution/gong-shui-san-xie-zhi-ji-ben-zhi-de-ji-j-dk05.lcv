@@ -1,0 +1,73 @@
+## 模拟
+
+使用变量 `cnt` 代表已删除的元素个数，由于每次删除元素，剩余元素都会往前移动，因此当前下标为 $i - cnt$。
+
+处理 `nums` 过程中，若当前下标为偶数，且与下一位置元素相同，那么当前元素需被删除，令 `cnt` 自增。
+
+最终数组长度为 $n - cnt$，若长度为奇数，需要再额外删除结尾元素（`cnt` 再加一），否则 `cnt` 即为答案。
+
+代码：
+
+* []
+
+```Java
+class Solution {
+    public int minDeletion(int[] nums) {
+        int n = nums.length, cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if ((i - cnt) % 2 == 0 && i + 1 < n && nums[i] == nums[i + 1]) cnt++;
+        }
+        return (n - cnt) % 2 != 0 ? cnt + 1 : cnt;
+    }
+}
+```
+
+* []
+
+```C++
+class Solution {
+public:
+    int minDeletion(vector<int>& nums) {
+        int n = nums.size(), cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if ((i - cnt) % 2 == 0 && i + 1 < n && nums[i] == nums[i + 1]) cnt++;
+        }
+        return (n - cnt) % 2 != 0 ? cnt + 1 : cnt;
+    }
+};
+```
+
+* []
+
+```Python
+class Solution:
+    def minDeletion(self, nums: List[int]) -> int:
+        n, cnt = len(nums), 0
+        for i in range(n):
+            if (i - cnt) % 2 == 0 and i + 1 < n and nums[i] == nums[i + 1]:
+                cnt += 1
+        return cnt + 1 if (n - cnt) % 2 != 0 else cnt
+```
+
+* []
+
+```TypeScript
+function minDeletion(nums: number[]): number {
+    let n = nums.length, cnt = 0;
+    for (let i = 0; i < n; i++) {
+        if ((i - cnt) % 2 == 0 && i + 1 < n && nums[i] == nums[i + 1]) cnt++;
+    }
+    return (n - cnt) % 2 != 0 ? cnt + 1 : cnt;
+};
+```
+
+* 时间复杂度：$O(n)$
+* 空间复杂度：$O(1)$
+
+---
+
+## 最后
+
+**如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/**
+
+所有题解已经加入 [刷题指南](https://github.com/SharingSource/LogicStack-LeetCode/wiki)，欢迎 star 哦 ~
