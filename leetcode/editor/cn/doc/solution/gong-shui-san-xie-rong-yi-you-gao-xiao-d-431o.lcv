@@ -1,0 +1,118 @@
+## 优先队列（小根堆）+ 哈希表
+
+使用 `idx` 代表顺序弹出的集合左边界，$[idx, +\infty]$ 范围内的数均为待弹出，起始有 $idx = 1$。
+
+考虑当调用 `addBack` 往集合添加数值 `x` 时，该如何处理：
+
+* $x \geq idx$：说明数值本身就存在于集合中，忽略该添加操作；
+* $x = idx - 1$：数值刚好位于边界左侧，更新 $idx = idx - 1$；
+* $x < idx - 1$：考虑将数值添加到某个容器中，该容器支持返回最小值，容易联想到“小根堆”；但小根堆并没有“去重”功能，为防止重复弹出，还需额外使用“哈希表”来记录哪些元素在堆中。
+
+该做法本质上将集合分成两类，一类是从 `idx` 到正无穷的连续段，对此类操作的复杂度为 $O(1)$；一类是比 `idx` 要小的离散类数集，对该类操作复杂度为 $O(\log{n})$，其中 $n$ 为调用 `addBack` 的最大次数。
+
+代码：
+
+* []
+
+```Java
+class SmallestInfiniteSet {
+    boolean[] vis = new boolean[1010];
+    PriorityQueue<Integer> q = new PriorityQueue<>((a,b)->a-b);
+    int idx = 1;
+    public int popSmallest() {
+        int ans = -1;
+        if (!q.isEmpty()) {
+            ans = q.poll();
+            vis[ans] = false;
+        } else {
+            ans = idx++;
+        }
+        return ans;
+    }
+    public void addBack(int x) {
+        if (x >= idx || vis[x]) return ;
+        if (x == idx - 1) {
+            idx--;
+        } else {
+            q.add(x);
+            vis[x] = true;
+        }
+    }
+}
+```
+
+* []
+
+```C++
+class SmallestInfiniteSet {
+public:
+    vector<bool> vis;
+    priority_queue<int, vector<int>, greater<int>> q;
+    int idx;
+    SmallestInfiniteSet() : idx(1) {
+        vis.resize(1010, false);
+    }
+    int popSmallest() {
+        int ans = -1;
+        if (!q.empty()) {
+            ans = q.top();
+            q.pop();
+            vis[ans] = false;
+        } else {
+            ans = idx++;
+        }
+        return ans;
+    }
+    void addBack(int x) {
+        if (x >= idx || vis[x]) return;
+        if (x == idx - 1) {
+            idx--;
+        } else {
+            q.push(x);
+            vis[x] = true;
+        }
+    }
+};
+
+```
+
+* []
+
+```Python
+class SmallestInfiniteSet:
+    def __init__(self):
+        self.vis = [False] * 1010
+        self.q = []
+        self.idx = 1
+
+    def popSmallest(self):
+        ans = -1
+        if self.q:
+            ans = heapq.heappop(self.q)
+            self.vis[ans] = False
+        else:
+            ans = self.idx
+            self.idx += 1
+        return ans
+
+    def addBack(self, x):
+        if x >= self.idx or self.vis[x]:
+            return
+        if x == self.idx - 1:
+            self.idx -= 1
+        else:
+            heapq.heappush(self.q, x)
+            self.vis[x] = True
+```
+
+* 时间复杂度：插入和取出的最坏复杂度为 $O(\log{n})$
+* 空间复杂度：$O(n)$
+
+---
+
+## 最后
+
+**如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/**
+
+所有题解已经加入 [刷题指南](https://github.com/SharingSource/LogicStack-LeetCode/wiki)，欢迎 star 哦 ~
+
